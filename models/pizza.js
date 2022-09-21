@@ -6,19 +6,25 @@ const PizzaSchema = new Schema(
   {
     pizzaName: {
       type: String,
+      required: true,
+      trim: true,
     },
     createdBy: {
       type: String,
+      required: true,
+      trim: true,
     },
     createdAt: {
       type: Date,
       //date.now will provide a time stamp if no data is entered in the field
       default: Date.now,
-      get: (createdAtVal) => dateFormat(createdAtVal)
+      get: (createdAtVal) => dateFormat(createdAtVal),
     },
     size: {
       type: String,
-      default: "Large",
+      required: true,
+      enum: ['Personal', 'Small', 'Medium', 'Large', 'Extra Large'],
+      default: 'Large'
     },
     toppings: [],
     comments: [
@@ -32,14 +38,17 @@ const PizzaSchema = new Schema(
   {
     toJSON: {
       virtuals: true,
-      getters: true
+      getters: true,
     },
     id: false,
   }
 );
 
-PizzaSchema.virtual('commentCount').get(function() {
-  return this.comments.reduce((total, comment) => total + comment.replies.length + 1, 0);
+PizzaSchema.virtual("commentCount").get(function () {
+  return this.comments.reduce(
+    (total, comment) => total + comment.replies.length + 1,
+    0
+  );
 });
 
 // create the Pizza model using the PizzaSchema

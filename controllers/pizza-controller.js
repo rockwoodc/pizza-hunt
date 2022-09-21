@@ -49,7 +49,7 @@ const pizzaController = {
   // update pizza by id
   updatePizza({ params, body }, res) {
     //'findooneandupdate' finds a single document we want to update, updates and returns updated document-- new:true -- returns the new document, false would return the old
-    Pizza.findOneAndUpdate({ _id: params.id }, body, { new: true })
+    Pizza.findOneAndUpdate({ _id: params.id }, body, { new: true, runValidators: true })
       .then((dbPizzaData) => {
         if (!dbPizzaData) {
           res.status(404).json({ message: "No pizza found with this id!" });

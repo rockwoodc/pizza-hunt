@@ -11,7 +11,7 @@ const commentController = {
           //mongodb functions start with a dollar sign
           { $push: { comments: _id } },
           //let us receive the updated pizza wi/comments
-          { new: true }
+          { new: true, runValidators: true }
         );
       })
       .then((dbPizzaData) => {
@@ -28,7 +28,7 @@ const commentController = {
     Comment.findOneAndUpdate(
       { _id: params.commentId },
       { $push: { replies: body } },
-      { new: true }
+      { new: true, runValidators: true }
     )
       .then((dbPizzaData) => {
         if (!dbPizzaData) {

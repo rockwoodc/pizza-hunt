@@ -21,14 +21,14 @@ function getPizza() {
     .then((response) => {
       //check for a 4xx or 5xx error message from server
       if (!response.ok) {
-        throw new Error({message: 'Something went wrong!'});
+        throw new Error({ message: "Something went wrong!" });
       }
       return response.json();
     })
     .then(printPizza)
-    .catch(err => {
+    .catch((err) => {
       console.log(err);
-      alert('cannot find a pizza with this id! Taking you back.');
+      alert("cannot find a pizza with this id! Taking you back.");
       window.history.back();
     });
 }
@@ -117,8 +117,8 @@ function printReply(reply) {
 function handleNewCommentSubmit(event) {
   event.preventDefault();
 
-  const commentBody = $newCommentForm.querySelector('#comment').value;
-  const writtenBy = $newCommentForm.querySelector('#written-by').value;
+  const commentBody = $newCommentForm.querySelector("#comment").value;
+  const writtenBy = $newCommentForm.querySelector("#written-by").value;
 
   if (!commentBody || !writtenBy) {
     return false;
@@ -127,28 +127,27 @@ function handleNewCommentSubmit(event) {
   const formData = { commentBody, writtenBy };
 
   fetch(`/api/comments/${pizzaId}`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json'
+      Accept: "application/json",
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify(formData)
+    body: JSON.stringify(formData),
   })
-    .then(response => {
+    .then((response) => {
       if (!response.ok) {
-        throw new Error('Something went wrong!');
+        throw new Error("Something went wrong!");
       }
       response.json();
     })
-    .then(commentResponse => {
+    .then((commentResponse) => {
       console.log(commentResponse);
       location.reload();
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err);
     });
 }
-
 
 function handleNewReplySubmit(event) {
   event.preventDefault();
@@ -167,6 +166,28 @@ function handleNewReplySubmit(event) {
   }
 
   const formData = { writtenBy, replyBody };
+
+  fetch(`/api/comments/${pizzaId}/${commentId}`, {
+    method: "PUT",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(formData),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Something went wrong!");
+      }
+      response.json();
+    })
+    .then((commentResponse) => {
+      console.log(commentResponse);
+      location.reload();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 }
 
 $backBtn.addEventListener("click", function () {
